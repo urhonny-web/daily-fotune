@@ -51,3 +51,55 @@ body {
 .card-back {
   transform: rotateY(180deg);
 }
+
+.rainbow-bg {
+  background: linear-gradient(
+    135deg,
+    #fecaca,
+    #fed7aa,
+    #fef08a,
+    #bbf7d0,
+    #bfdbfe,
+    #c7d2fe,
+    #e9d5ff
+  );
+}
+
+.rainbow-card-front {
+  background: linear-gradient(
+    135deg,
+    #ef4444,
+    #f97316,
+    #eab308,
+    #22c55e,
+    #3b82f6,
+    #4338ca,
+    #a855f7
+  );
+}
+
+.rainbow-card-back {
+  background: linear-gradient(
+    135deg,
+    #fca5a5,
+    #fdba74,
+    #fde047,
+    #86efac,
+    #93c5fd,
+    #a5b4fc,
+    #d8b4fe
+  );
+}
+
+.rainbow-button {
+  background: linear-gradient(
+    90deg,
+    #ef4444,
+    #f97316,
+    #eab308,
+    #22c55e,
+    #3b82f6,
+    #4338ca,
+    #a855f7
+  );
+}

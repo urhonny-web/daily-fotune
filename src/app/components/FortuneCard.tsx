@@ -97,14 +97,14 @@ export default function FortuneCard() {
       >
         <div key={spinKey} className={`card-inner ${flipped ? "is-flipped" : ""}`}>
           <div className="card-face card-front">
-            <div className="flex h-full flex-col items-center justify-center gap-3 rounded-2xl bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 text-white shadow-xl">
-              <span className="text-5xl">🔮</span>
-              <p className="text-lg font-bold tracking-wide">오늘의 운세</p>
-              <p className="text-xs text-white/80">카드를 눌러보세요</p>
+            <div className="rainbow-card-front flex h-full flex-col items-center justify-center gap-3 rounded-2xl text-white shadow-xl">
+              <span className="text-5xl">🌈</span>
+              <p className="text-lg font-bold tracking-wide drop-shadow">오늘의 운세</p>
+              <p className="text-xs text-white/90 drop-shadow">카드를 눌러보세요</p>
             </div>
           </div>
           <div className="card-face card-back">
-            <div className="flex h-full flex-col items-center justify-center gap-3 rounded-2xl bg-gradient-to-br from-amber-300 via-orange-300 to-rose-300 p-6 text-center text-zinc-800 shadow-xl dark:text-zinc-900">
+            <div className="rainbow-card-back flex h-full flex-col items-center justify-center gap-3 rounded-2xl p-6 text-center text-zinc-800 shadow-xl">
               {fortune && (
                 <>
                   <span className="text-4xl">✨</span>
@@ -133,7 +133,7 @@ export default function FortuneCard() {
 
       <button
         onClick={handleClick}
-        className="rounded-full bg-zinc-900 px-6 py-3 text-sm font-medium text-white transition-colors hover:bg-zinc-700 dark:bg-white dark:text-zinc-900 dark:hover:bg-zinc-200"
+        className="rainbow-button rounded-full px-6 py-3 text-sm font-bold text-white shadow-md transition-transform hover:scale-105"
       >
         {flipped ? "다시 뽑기" : "운세 뽑기"}
       </button>
