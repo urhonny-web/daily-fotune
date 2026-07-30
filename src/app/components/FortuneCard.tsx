@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { recordFortune } from "../lib/fortuneHistory";
 
 type Fortune = {
   message: string;
@@ -75,14 +76,18 @@ export default function FortuneCard() {
 
   const handleClick = () => {
     if (!flipped) {
-      setFortune(drawFortune());
+      const next = drawFortune();
+      setFortune(next);
       setFlipped(true);
+      recordFortune(next);
     } else {
       setFlipped(false);
       window.setTimeout(() => {
-        setFortune(drawFortune());
+        const next = drawFortune();
+        setFortune(next);
         setSpinKey((k) => k + 1);
         setFlipped(true);
+        recordFortune(next);
       }, 400);
     }
   };
