@@ -36,46 +36,42 @@ export default function FortuneHistory() {
   );
 
   return (
-    <div className="w-full max-w-2xl">
-      <h2 className="mb-3 text-lg font-semibold text-zinc-900 dark:text-zinc-50">
-        내 운세 기록
-      </h2>
+    <div className="w-full">
+      <div className="mb-4 flex items-center gap-3">
+        <h2 className="font-[family-name:var(--font-display)] text-base font-semibold text-[var(--ink)]">
+          내 운세 기록
+        </h2>
+        <div className="h-px flex-1 bg-[var(--gold-soft)]" />
+      </div>
+
       {sorted.length === 0 ? (
-        <p className="text-sm text-zinc-500 dark:text-zinc-400">
-          아직 뽑은 운세 기록이 없어요.
-        </p>
+        <p className="text-sm text-[var(--muted)]">아직 뽑은 운세 기록이 없어요.</p>
       ) : (
-        <div className="overflow-x-auto rounded-xl border border-zinc-200 dark:border-zinc-700">
-          <table className="w-full min-w-[560px] text-left text-sm">
-            <thead className="bg-zinc-100 text-zinc-600 dark:bg-zinc-800 dark:text-zinc-300">
-              <tr>
-                <th className="px-4 py-2 font-medium">뽑은 시각</th>
-                <th className="px-4 py-2 font-medium">운세</th>
-                <th className="px-4 py-2 font-medium">행운의 아이템</th>
-                <th className="px-4 py-2 font-medium">행운의 색</th>
-                <th className="px-4 py-2 font-medium">행운의 숫자</th>
-              </tr>
-            </thead>
-            <tbody>
-              {sorted.map((record) => (
-                <tr
-                  key={record.id}
-                  className="border-t border-zinc-200 dark:border-zinc-700"
-                >
-                  <td className="whitespace-nowrap px-4 py-2 text-zinc-500 dark:text-zinc-400">
-                    {new Date(record.drawnAt).toLocaleString("ko-KR", {
-                      timeZone: "Asia/Seoul",
-                    })}
-                  </td>
-                  <td className="px-4 py-2">{record.message}</td>
-                  <td className="px-4 py-2">{record.item}</td>
-                  <td className="px-4 py-2">{record.color}</td>
-                  <td className="px-4 py-2">{record.number}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+        <ul className="flex flex-col gap-3">
+          {sorted.map((record) => (
+            <li key={record.id} className="history-item rounded-xl p-4">
+              <p className="text-[11px] tracking-wide text-[var(--muted)]">
+                {new Date(record.drawnAt).toLocaleString("ko-KR", {
+                  timeZone: "Asia/Seoul",
+                })}
+              </p>
+              <p className="mt-1.5 text-sm leading-relaxed text-[var(--ink)]">
+                {record.message}
+              </p>
+              <div className="mt-3 flex flex-wrap gap-2">
+                <span className="chip gold-text rounded-full px-2.5 py-1 text-[11px]">
+                  🍀 {record.item}
+                </span>
+                <span className="chip gold-text rounded-full px-2.5 py-1 text-[11px]">
+                  🎨 {record.color}
+                </span>
+                <span className="chip gold-text rounded-full px-2.5 py-1 text-[11px]">
+                  🔢 {record.number}
+                </span>
+              </div>
+            </li>
+          ))}
+        </ul>
       )}
     </div>
   );

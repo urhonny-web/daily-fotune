@@ -102,47 +102,56 @@ export default function FortuneCard() {
   return (
     <div className="flex flex-col items-center gap-8">
       <div
-        className="card-perspective h-80 w-56 cursor-pointer select-none sm:h-96 sm:w-64"
+        className="card-perspective h-[22rem] w-64 cursor-pointer select-none sm:h-[26rem] sm:w-72"
         onClick={handleClick}
         role="button"
         aria-label="카드를 눌러 오늘의 운세 보기"
       >
         <div key={spinKey} className={`card-inner ${flipped ? "is-flipped" : ""}`}>
           <div className="card-face card-front">
-            <div className="flex h-full flex-col items-center justify-center gap-3 rounded-2xl bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 text-white shadow-xl">
-              <span className="text-5xl">🔮</span>
-              <p className="text-lg font-bold tracking-wide">오늘의 운세</p>
-              <p className="text-xs text-white/80">카드를 눌러보세요</p>
+            <div className="card-shell card-front-bg flex h-full flex-col items-center justify-center gap-4 p-6 text-center">
+              <span className="floating-orb text-6xl drop-shadow-[0_0_18px_rgba(232,200,116,0.55)]">
+                🔮
+              </span>
+              <div className="flex flex-col items-center gap-2">
+                <p className="font-[family-name:var(--font-display)] text-xl font-bold tracking-wide text-[var(--ink)]">
+                  오늘의 운세
+                </p>
+                <div className="gold-divider" />
+                <p className="text-xs text-[var(--muted)]">카드를 눌러보세요</p>
+              </div>
             </div>
           </div>
           <div className="card-face card-back">
-            <div className="flex h-full flex-col items-center justify-center gap-3 rounded-2xl bg-gradient-to-br from-amber-300 via-orange-300 to-rose-300 p-6 text-center text-zinc-800 shadow-xl dark:text-zinc-900">
+            <div className="card-shell card-back-bg flex h-full flex-col items-center justify-center gap-4 p-6 text-center">
               {isLoading && (
                 <>
-                  <span className="animate-pulse text-4xl">🔮</span>
-                  <p className="text-sm font-medium">
+                  <span className="spin-slow text-4xl">✨</span>
+                  <p className="text-sm text-[var(--muted)]">
                     AI가 오늘의 운세를 만들고 있어요...
                   </p>
                 </>
               )}
               {!isLoading && fortune && (
                 <>
-                  <span className="text-4xl">✨</span>
-                  <p className="text-base font-semibold leading-relaxed">
+                  <span className="text-3xl">✨</span>
+                  <p className="font-[family-name:var(--font-display)] text-base leading-relaxed text-[var(--ink)]">
                     {fortune.message}
                   </p>
-                  <div className="mt-2 flex flex-col gap-1 text-sm">
-                    <p>
-                      🍀 행운의 아이템:{" "}
-                      <span className="font-bold">{fortune.item}</span>
-                    </p>
-                    <p>
-                      🎨 행운의 색: <span className="font-bold">{fortune.color}</span>
-                    </p>
-                    <p>
-                      🔢 행운의 숫자:{" "}
-                      <span className="font-bold">{fortune.number}</span>
-                    </p>
+                  <div className="gold-divider" />
+                  <div className="flex w-full items-stretch justify-center gap-3 text-xs">
+                    <div className="flex flex-1 flex-col items-center gap-1 border-r border-[var(--gold-soft)] pr-3">
+                      <span className="text-[var(--muted)]">아이템</span>
+                      <span className="gold-text font-semibold">{fortune.item}</span>
+                    </div>
+                    <div className="flex flex-1 flex-col items-center gap-1 border-r border-[var(--gold-soft)] px-3">
+                      <span className="text-[var(--muted)]">색</span>
+                      <span className="gold-text font-semibold">{fortune.color}</span>
+                    </div>
+                    <div className="flex flex-1 flex-col items-center gap-1 pl-3">
+                      <span className="text-[var(--muted)]">숫자</span>
+                      <span className="gold-text font-semibold">{fortune.number}</span>
+                    </div>
                   </div>
                 </>
               )}
@@ -153,7 +162,7 @@ export default function FortuneCard() {
 
       <button
         onClick={handleClick}
-        className="rounded-full bg-zinc-900 px-6 py-3 text-sm font-medium text-white transition-colors hover:bg-zinc-700 dark:bg-white dark:text-zinc-900 dark:hover:bg-zinc-200"
+        className="rounded-full bg-gradient-to-r from-[#e8c874] to-[#c9932f] px-8 py-3 text-sm font-semibold text-[#1c1236] shadow-[0_10px_30px_-10px_rgba(232,200,116,0.6)] transition-transform hover:scale-105"
       >
         {flipped ? "다시 뽑기" : "운세 뽑기"}
       </button>
