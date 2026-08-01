@@ -2,6 +2,12 @@
 
 import { useEffect, useSyncExternalStore } from "react";
 import {
+  ensureAuthInitialized,
+  getAuthSnapshot,
+  getServerAuthSnapshot,
+  subscribeAuth,
+} from "../lib/authStore";
+import {
   getHistorySnapshot,
   getServerHistorySnapshot,
   loadHistory,
@@ -14,10 +20,16 @@ export default function FortuneHistory() {
     getHistorySnapshot,
     getServerHistorySnapshot,
   );
+  const auth = useSyncExternalStore(subscribeAuth, getAuthSnapshot, getServerAuthSnapshot);
 
   useEffect(() => {
-    loadHistory();
+    ensureAuthInitialized();
   }, []);
+
+  useEffect(() => {
+    if (auth.loading) return;
+    loadHistory();
+  }, [auth.loading, auth.user?.id]);
 
   const sorted = [...history].sort(
     (a, b) => new Date(b.drawnAt).getTime() - new Date(a.drawnAt).getTime(),

@@ -1,3 +1,4 @@
+import AuthPanel from "./components/AuthPanel";
 import FortuneCard from "./components/FortuneCard";
 import FortuneHistory from "./components/FortuneHistory";
 
@@ -12,6 +13,7 @@ export default function Home() {
           카드를 눌러 오늘의 운세와 행운의 아이템을 확인해보세요.
         </p>
       </div>
+      <AuthPanel />
       <FortuneCard />
       <FortuneHistory />
     </div>

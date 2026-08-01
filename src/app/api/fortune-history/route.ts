@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getSupabaseAdmin } from "../../lib/supabaseAdmin";
+import { getAuthenticatedUserId, getSupabaseAdmin } from "../../lib/supabaseAdmin";
 
 type FortuneHistoryRow = {
   id: string;
@@ -22,17 +22,24 @@ function toRecord(row: FortuneHistoryRow) {
 }
 
 export async function GET(request: NextRequest) {
+  const userId = await getAuthenticatedUserId(request);
   const visitorId = request.nextUrl.searchParams.get("visitorId");
-  if (!visitorId) {
+
+  if (!userId && !visitorId) {
     return NextResponse.json({ error: "visitorId is required" }, { status: 400 });
   }
 
   const supabase = getSupabaseAdmin();
-  const { data, error } = await supabase
+  let query = supabase
     .from("fortune_history")
     .select("id, drawn_at, message, item, color, number")
-    .eq("visitor_id", visitorId)
     .order("drawn_at", { ascending: false });
+
+  query = userId
+    ? query.eq("user_id", userId)
+    : query.eq("visitor_id", visitorId as string).is("user_id", null);
+
+  const { data, error } = await query;
 
   if (error) {
     return NextResponse.json({ error: error.message }, { status: 500 });
@@ -42,6 +49,7 @@ export async function GET(request: NextRequest) {
 }
 
 export async function POST(request: NextRequest) {
+  const userId = await getAuthenticatedUserId(request);
   const body = await request.json();
   const { visitorId, message, item, color, number } = body ?? {};
 
@@ -58,7 +66,7 @@ export async function POST(request: NextRequest) {
   const supabase = getSupabaseAdmin();
   const { data, error } = await supabase
     .from("fortune_history")
-    .insert({ visitor_id: visitorId, message, item, color, number })
+    .insert({ visitor_id: visitorId, user_id: userId, message, item, color, number })
     .select("id, drawn_at, message, item, color, number")
     .single();
 

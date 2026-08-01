@@ -1,9 +1,11 @@
 import "server-only";
 import { createClient, SupabaseClient } from "@supabase/supabase-js";
+import { NextRequest } from "next/server";
 
 type FortuneHistoryRow = {
   id: string;
   visitor_id: string;
+  user_id: string | null;
   drawn_at: string;
   message: string;
   item: string;
@@ -16,8 +18,8 @@ type Database = {
     Tables: {
       fortune_history: {
         Row: FortuneHistoryRow;
-        Insert: Omit<FortuneHistoryRow, "id" | "drawn_at"> &
-          Partial<Pick<FortuneHistoryRow, "id" | "drawn_at">>;
+        Insert: Omit<FortuneHistoryRow, "id" | "drawn_at" | "user_id"> &
+          Partial<Pick<FortuneHistoryRow, "id" | "drawn_at" | "user_id">>;
         Update: Partial<FortuneHistoryRow>;
         Relationships: [];
       };
@@ -41,4 +43,15 @@ export function getSupabaseAdmin() {
     });
   }
   return client;
+}
+
+export async function getAuthenticatedUserId(request: NextRequest): Promise<string | null> {
+  const authHeader = request.headers.get("authorization");
+  const token = authHeader?.replace(/^Bearer\s+/i, "");
+  if (!token) return null;
+
+  const supabase = getSupabaseAdmin();
+  const { data, error } = await supabase.auth.getUser(token);
+  if (error || !data.user) return null;
+  return data.user.id;
 }
