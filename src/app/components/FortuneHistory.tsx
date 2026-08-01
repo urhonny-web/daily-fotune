@@ -51,7 +51,9 @@ export default function FortuneHistory() {
                   className="border-t border-zinc-200 dark:border-zinc-700"
                 >
                   <td className="whitespace-nowrap px-4 py-2 text-zinc-500 dark:text-zinc-400">
-                    {new Date(record.drawnAt).toLocaleString("ko-KR")}
+                    {new Date(record.drawnAt).toLocaleString("ko-KR", {
+                      timeZone: "Asia/Seoul",
+                    })}
                   </td>
                   <td className="px-4 py-2">{record.message}</td>
                   <td className="px-4 py-2">{record.item}</td>
