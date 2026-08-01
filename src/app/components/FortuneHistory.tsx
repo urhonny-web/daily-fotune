@@ -1,9 +1,10 @@
 "use client";
 
-import { useSyncExternalStore } from "react";
+import { useEffect, useSyncExternalStore } from "react";
 import {
   getHistorySnapshot,
   getServerHistorySnapshot,
+  loadHistory,
   subscribeHistory,
 } from "../lib/fortuneHistory";
 
@@ -14,7 +15,13 @@ export default function FortuneHistory() {
     getServerHistorySnapshot,
   );
 
-  const sorted = [...history].sort((a, b) => b.drawnAt - a.drawnAt);
+  useEffect(() => {
+    loadHistory();
+  }, []);
+
+  const sorted = [...history].sort(
+    (a, b) => new Date(b.drawnAt).getTime() - new Date(a.drawnAt).getTime(),
+  );
 
   return (
     <div className="w-full max-w-2xl">
@@ -38,9 +45,9 @@ export default function FortuneHistory() {
               </tr>
             </thead>
             <tbody>
-              {sorted.map((record, index) => (
+              {sorted.map((record) => (
                 <tr
-                  key={`${record.drawnAt}-${index}`}
+                  key={record.id}
                   className="border-t border-zinc-200 dark:border-zinc-700"
                 >
                   <td className="whitespace-nowrap px-4 py-2 text-zinc-500 dark:text-zinc-400">
