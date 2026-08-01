@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { generateAiFortune } from "../lib/aiFortune";
 import { recordFortune } from "../lib/fortuneHistory";
 
 type Fortune = {
@@ -73,21 +74,27 @@ export default function FortuneCard() {
   const [flipped, setFlipped] = useState(false);
   const [fortune, setFortune] = useState<Fortune | null>(null);
   const [spinKey, setSpinKey] = useState(0);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const drawNewFortune = async () => {
+    setIsLoading(true);
+    const next = (await generateAiFortune()) ?? drawFortune();
+    setFortune(next);
+    setIsLoading(false);
+    recordFortune(next);
+  };
 
   const handleClick = () => {
+    if (isLoading) return;
     if (!flipped) {
-      const next = drawFortune();
-      setFortune(next);
       setFlipped(true);
-      recordFortune(next);
+      drawNewFortune();
     } else {
       setFlipped(false);
       window.setTimeout(() => {
-        const next = drawFortune();
-        setFortune(next);
         setSpinKey((k) => k + 1);
         setFlipped(true);
-        recordFortune(next);
+        drawNewFortune();
       }, 400);
     }
   };
@@ -110,7 +117,15 @@ export default function FortuneCard() {
           </div>
           <div className="card-face card-back">
             <div className="flex h-full flex-col items-center justify-center gap-3 rounded-2xl bg-gradient-to-br from-amber-300 via-orange-300 to-rose-300 p-6 text-center text-zinc-800 shadow-xl dark:text-zinc-900">
-              {fortune && (
+              {isLoading && (
+                <>
+                  <span className="animate-pulse text-4xl">🔮</span>
+                  <p className="text-sm font-medium">
+                    AI가 오늘의 운세를 만들고 있어요...
+                  </p>
+                </>
+              )}
+              {!isLoading && fortune && (
                 <>
                   <span className="text-4xl">✨</span>
                   <p className="text-base font-semibold leading-relaxed">
